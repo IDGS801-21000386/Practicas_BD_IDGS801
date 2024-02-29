@@ -1,0 +1,42 @@
+{%extends "layout2.html"%}
+
+{%block container%}
+{%import "_macros.html" as macros %}
+
+<h1>Registrar Empleado</h1>
+
+<form name="set" action="/registrar_empleado" method="POST" novalidate>
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floa-label-form-group controls">
+            {{macros.camposNuevos(form.nombre, class="form-control")}}
+        </div>
+    </div>
+
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floa-label-form-group controls">
+            {{macros.camposNuevos(form.direccion, class="form-control")}}
+        </div>
+    </div>
+
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floa-label-form-group controls">
+            {{macros.camposNuevos(form.telefono, class="form-control")}}
+        </div>
+    </div>
+
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floa-label-form-group controls">
+            {{macros.camposNuevos(form.correo, class="form-control")}}
+        </div>
+    </div>
+
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floa-label-form-group controls">
+            {{macros.camposNuevos(form.sueldo, class="form-control")}}
+        </div>
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    <input type="submit" id="send-signup" name="signup" value="Registrar">
+</form>
+{%endblock%}
