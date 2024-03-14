@@ -1,0 +1,16 @@
+{%extends "layout2.html"%}
+
+{%from "_macros.html" import render_field %}
+
+{%block container %}
+
+<div class="container">
+    <div class="row">
+        {%for c in compra%}
+            <p>{{c.nombre}} total {{c.total_compra}}</p>
+        {%endfor%}
+
+        <p>Ventas totales del dia: {{suma_total}}</p>
+    </div>
+</div>
+{%endblock%}

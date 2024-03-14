@@ -1,0 +1,214 @@
+{%extends "layout2.html"%}
+
+{%block container%}
+{%import "_macros.html" as macros %}
+
+<div style="display: flex; justify-content: center; align-items: center;">
+    <h1>REGISTRAR VENTA</h1>
+</div>
+
+
+<form name="set" action="/pedido_form" class="contenedor-form" method="POST" novalidate>
+    <div class="contenedor-pedido">
+        <div class="row control-group" id="contenedor-tamanio">
+            <div class="form-group col-xs-12 floa-label-form-group controls">
+                {{macros.camposNuevos(form1.tamanio, class="form-control")}}
+            </div>
+        </div>
+
+        <div id="contenedor-ingredientes">
+            <div class="row control-group">
+
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    <p>Ingredientes</p>
+                    {{macros.camposNuevos(form1.jamon, class="form-control")}}
+                </div>
+            </div>
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form1.pina, class="form-control")}}
+                </div>
+            </div>
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form1.champinones, class="form-control")}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row control-group">
+            <div class="form-group col-xs-12 floa-label-form-group controls">
+                {{macros.camposNuevos(form1.num_pizzas, class="form-control")}}
+            </div>
+        </div>
+    </div>
+
+    <div style="margin: 20px;">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <button type="submit" class="boton btn1" name="signup"><span>Agregar pizza <i
+                    class="icon-plus"></i></span></button>
+    </div>
+</form>
+
+<div class="container">
+    <div class="row">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <h1>TOTAL A PAGAR: $</h1>
+            <h1 id="txtTotal">{{total}}</h1>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tamaño</th>
+                    <th>Ingredientes</th>
+                    <th>Num Pizzas</th>
+                    <th>Sub Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for p in pedidos_list %}
+                <tr>
+                    <td>${{p.tamanio}}</td>
+                    <td>{{p.ingredientes}}</td>
+                    <td>{{p.num_pizzas}}</td>
+                    <td>${{p.sub_total}}</td>
+                    <form action="/remover_pizza" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="index" value="{{ loop.index0 }}">
+                        <td><button type="submit" class="btn btn-danger">Eliminar</button></td>
+                    </form>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+    <form action="/pizzeria_form" method="POST" onsubmit="return confirmCommit()" novalidate
+        style="margin-bottom: 80px;">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <h2>DATOS DEL CLIENTE</h2>
+        </div>
+
+        <div class="contenedor-cliente">
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form2.nombre, class="form-control")}}
+                </div>
+            </div>
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form2.direccion, class="form-control")}}
+                </div>
+            </div>
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form2.telefono, class="form-control")}}
+                </div>
+            </div>
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form2.fecha_compra, class="form-control")}}
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; align-items: center; margin: 0;">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+            <button type="submit" class="boton btn2" name="signup"><span>Terminar pedido <i
+                        class="icon-check"></i></span></button>
+        </div>
+
+    </form>
+
+</div>
+
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+    <form action="/ventas_dia" method="POST">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <button type="submit" class="boton btn4" name="signup"><span>Ventas del dia</span></button>
+    </form>
+
+    <form action="/ventas_mes" method="POST">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <button type="submit" class="boton btn4" name="signup"><span>Ventas del mes</span></button>
+    </form>
+
+    <form id="formVentasDia" action="/ventas_dia2" method="POST">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <select name="dia_semana" id="dia_semana" onchange="enviarFormulario2()">
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miércoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+            <option value="7">Domingo</option>
+        </select>
+    </form>
+
+    <form id="formVentasMes" action="/ventas_mes2" method="POST">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <select name="mes" id="mes" onchange="enviarFormulario()">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+    </form>
+</div>
+
+<div class="contenedor-ventas">
+    <div class="row">
+        <h1 id="tituloVentas">{{titulo_venta}}</h1>
+        <div style="display:flex; flex-direction: column; justify-content: center; align-items: center;">
+            {%for c in compra%}
+            <p>{{c.nombre}} total ${{c.total_compra}}</p>
+            {%endfor%}
+        </div>
+        <h3>Ventas totales: ${{suma_total}}</h3>
+    </div>
+</div>
+
+
+<script>
+    function confirmCommit() {
+        // Obtener el elemento con el id "total"
+        var totalElement = document.getElementById("txtTotal");
+
+        // Obtener el valor del elemento
+        var totalValue = totalElement.innerHTML; // O totalElement.textContent
+
+        if (confirm("El costo total será de " + totalValue + ". ¿Estás seguro de realizar la compra?")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function enviarFormulario() {
+        document.getElementById("formVentasMes").submit();
+    }
+
+    function enviarFormulario2() {
+        document.getElementById("formVentasDia").submit();
+    }
+
+    function enviarFecha() {
+        document.getElementById("formVentasDiaInput").submit();
+    }
+</script>
+
+{%endblock%}

@@ -1,0 +1,52 @@
+{%extends "layout2.html"%}
+
+{%block container%}
+{%import "_macros.html" as macros %}
+
+<h1>MODIFICAR ORDEN</h1>
+
+<form name="set" action="/modificar_pizza" method="POST">
+    <div class="contenedor-pedido">
+        <div class="row control-group" id="contenedor-tamanio">
+            <div class="form-group col-xs-12 floa-label-form-group controls">
+                {{macros.camposNuevos(form1.tamanio, class="form-control")}}
+            </div>
+        </div>
+
+        <div id="contenedor-ingredientes">
+            <div class="row control-group">
+
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    <p>Ingredientes</p>
+                    {{macros.camposNuevos(form1.jamon, class="form-control")}}
+                </div>
+            </div>
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form1.pina, class="form-control")}}
+                </div>
+            </div>
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floa-label-form-group controls">
+                    {{macros.camposNuevos(form1.champinones, class="form-control")}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row control-group">
+            <div class="form-group col-xs-12 floa-label-form-group controls">
+                {{macros.camposNuevos(form1.num_pizzas, class="form-control")}}
+            </div>
+        </div>
+    </div>
+
+    <div style="margin: 20px;">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <button type="submit" class="boton btn1" name="signup"><span>Agregar pizza <i
+                    class="icon-plus"></i></span></button>
+    </div>
+
+</form>
+{%endblock%}
